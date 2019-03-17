@@ -1,56 +1,44 @@
 import React, {Component} from 'react';
-import {Grid, Paper} from '@material-ui/core/';
-import {Divider, List, ListItem} from '@material-ui/core/';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import {Grid, Paper, Divider, List, MenuList, MenuItem, Typography, ListItem, ListItemIcon, ListItemText} from '@material-ui/core/';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
-import Right from './Right'
-import Footer from './Footer'
-
-
+import Right from './Right';
 
 const style = {
-  Paper: {padding : 20, marginTop:10, marginBottom:10 }
+  Paper: {padding : 10, margin:10, height: '80vh' }
 }
 
-
 class Grids extends Component {
-
   render(){
     return(
-      <Grid container direction="row" justify="flex-start" alignItems="stretch">
+      <Grid container justify="flex-start" alignItems="stretch" spacing={16}>
         <Grid item xs={3}>
-          <Paper>
-            <div>
-              <List>{['Lista de tareas', 'Gráfica', ].map((text, index) => (
-                <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <AssignmentIcon /> : <TrendingUpIcon />}</ListItemIcon>
-                <ListItemText primary={text} /></ListItem>
-              ))}
-              </List>
-              <Divider />
+          <Paper style={style.Paper}>
+              <MenuList>
+                <MenuItem>
+                  <ListItemIcon><AssignmentIcon/></ListItemIcon>
+                  <Typography variant="inherit" noWrap>Tareas</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon><TrendingUpIcon/></ListItemIcon>
+                  <Typography variant="inherit" noWrap>Gráfica</Typography>
+                </MenuItem>
+              </MenuList>
+              <Divider/>
               <List>
-                <ListItem button>
+                <ListItem>
                 <ListItemText primary="About" />
                 </ListItem>
-                </List>
-                <Footer/>
-            </div>
-          </Paper>
+              </List>
+            </Paper>
+          </Grid>
+          <Grid item xs={9}>
+            <Paper style={style.Paper}>
+              <Right/>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item sm>
-          <Paper style={style.Paper}>
-
-          <Right/>
-
-
-
-
-          </Paper>
-        </Grid>
-      </Grid>
     )
   }
 }
