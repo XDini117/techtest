@@ -9,7 +9,7 @@ import TasksViewer from './TasksViewer'
 import FTasksViewer from './FTasksViewer'
 
 const style = {
-  Paper: {paddingTop : 5}
+  PaperR: {marginTop:8, marginBottom:8}
 }
 
 class Right extends React.Component {
@@ -26,34 +26,26 @@ class Right extends React.Component {
 
   render() {
     return (
-      <div >
-        <Grid container>
-          <AppBar position="static" color="default">
+      <Grid item>
+      <Grid item>
+        <Paper style={style.PaperR}>
+          <AppBar position="static">
             <Tabs
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="secondary"
             variant="fullWidth">
               <Tab label="Tareas pendientes" />
               <Tab label="Tareas terminadas" />
             </Tabs>
           </AppBar>
-          <Grid item xs={12}>
-            <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
-
-              <Paper style={style.Paper}>
-                <TasksViewer/>
-              </Paper>
-
-              <Paper style={style.Paper}>
-                <FTasksViewer/>
-              </Paper>
-
-            </SwipeableViews>
-          </Grid>
+          </Paper>
         </Grid>
-      </div>
+          <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
+            <TasksViewer/>
+            <FTasksViewer/>
+          </SwipeableViews>
+</Grid>
     );
   }
 }
