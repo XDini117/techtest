@@ -24,10 +24,12 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import SubtitlesOutlinedIcon from '@material-ui/icons/SubtitlesOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 //Intentar si mejora con xs=auto
 
 const innerTheme = createMuiTheme({
@@ -88,14 +90,14 @@ const style = {
 class TasksViewer extends React.Component {
 
   state = {
-    expanded: null,
-    amount: '',
-    tasks:
-    {
-      taskTitle : "Sacar al prro",
-      taskDesc: "Tenemos que pasear al prro",
-      taskLife: ""
-    }
+        expanded: null,
+        tTitle: 'Pasear al prro',
+        tDesc: "Tenemos que pasear al prro",
+        tLife: '',
+        tActive: false,
+        tBirthDate: "",
+        tDeathDate: ""
+
   };
 
   handleChange = panel => (event, expanded) => {
@@ -104,13 +106,16 @@ class TasksViewer extends React.Component {
     });
   };
 
-  handleChangeTime = prop => event => {
-
-    const hDur = {[prop]: event.target.value.taskLife}
-    const prueba = (( hDur === "custom") ? 'verdadero' : 'falso' );
-    console.log("Resultado: " + prueba);
-
+  handleCheck = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
   };
+
+  handleChangeLife = (event, evalue) => {
+
+    console.log("Resultado: " + {tLife: evalue});
+  }
 
   render(){
     const { expanded } = this.state;
@@ -178,7 +183,6 @@ class TasksViewer extends React.Component {
           variant="outlined"
 fullWidth
           value={this.state.weightRange}
-          onChange={this.handleChangeTime('weightRange')}
           InputProps={{
             startAdornment: <InputAdornment position="end">mm:ss</InputAdornment>,
           }}
@@ -213,7 +217,7 @@ fullWidth
 
 
                 <ExpansionPanelActions>
-                  <Button variant="outlined" size="small"><DeleteIcon/></Button>
+                  <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
                   <Button variant="outlined" size="small" ><SaveOutlinedIcon/>Save</Button>
                 </ExpansionPanelActions>
               </ExpansionPanel>
@@ -340,7 +344,7 @@ fullWidth
         <Divider />
         <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
           <Paper elevation={2} style={style.PaperT}>
-            <ExpansionPanel expanded={expanded === 'tnueva'} onChange={this.handleChange('tnueva')}>
+            <ExpansionPanel expanded onChange={this.handleChange('tnueva')}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid item xs={12}>
                     <TextField id="taskTitle" label="Tarea" placeholder="¿Qué hay que hacer?" variant="outlined" margin="dense"
@@ -370,19 +374,27 @@ fullWidth
                     }}/>
                   </Grid>
                   <Grid item>
-                    <TextField id="taskLife" select label="Duración" variant="outlined" margin="dense" fullWidth
-                    value={this.state.tasks.taskLife} onChange={this.handleChangeTime('taskLife')}
+                    <TextField id="taskLife" select label="Duración" variant="outlined" margin="dense"
+                     helperText="Hola"
                     InputProps={{
                       startAdornment:
                         <InputAdornment position="start">
                           <WatchLaterOutlinedIcon color="error"/>
                         </InputAdornment>
                     }}>
-                      {ranges.map(option => (<MenuItem  value={option.value}>
+                      {ranges.map(option => (
+                        <MenuItem key={option.value} value={option.value}
+                        onClick= {event => this.handleChangeLife(event, option.value)}>
                         {option.label}
                       </MenuItem>
                       ))}
                       </TextField>
+
+                      <FormControlLabel control={
+                      <Checkbox onChange={this.handleCheck('taskActive')}
+                      value="checkedA" color="error"/>}
+                      label="Iniciar tarea después de guardar"
+                      />
                     </Grid>
                   </Grid>
                 </ExpansionPanelDetails>
@@ -390,8 +402,8 @@ fullWidth
                 <Divider />
 
                 <ExpansionPanelActions>
-                <Button variant="outlined" size="small"><DeleteIcon/></Button>
-                <Button variant="outlined" size="small" ><SaveOutlinedIcon/>Save</Button>
+                <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
+                <Button variant="outlined" size="small" ><SaveOutlinedIcon/></Button>
               </ExpansionPanelActions>
             </ExpansionPanel>
             </Paper>
