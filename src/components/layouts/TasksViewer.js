@@ -3,7 +3,6 @@ import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AssignmentTwoTone from '@material-ui/icons/AssignmentTwoTone';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 
 import Tooltip from '@material-ui/core/Tooltip';
@@ -22,6 +21,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
+import SubtitlesOutlinedIcon from '@material-ui/icons/SubtitlesOutlined';
+import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -33,7 +34,7 @@ const innerTheme = createMuiTheme({
   palette: {
     primary: {
       main: "rgba(255, 255, 255, 1)",
-    },
+    }
   }
 });
 
@@ -43,12 +44,16 @@ const ranges = [
     label: 'Corta: 30 min o menos',
   },
   {
-    value: '31-60',
+    value: '60',
     label: 'Media: 30 min a 1 hr',
   },
   {
-    value: '61-120',
+    value: '120',
     label: 'Larga: más de 1 hr',
+  },
+  {
+    value: 'custom',
+    label: 'Definir',
   },
 ];
 
@@ -77,7 +82,7 @@ const style = {
   textField: {
     flexBasis: 200,
   },
-    PaperT: {marginLeft:2, marginRight:2}
+  PaperT: {marginLeft:2, marginRight:2}
 }
 
 class TasksViewer extends React.Component {
@@ -85,10 +90,13 @@ class TasksViewer extends React.Component {
   state = {
     expanded: null,
     amount: '',
-    weightRange: '',
+    tasks:
+    {
+      taskTitle : "Sacar al prro",
+      taskDesc: "Tenemos que pasear al prro",
+      taskLife: ""
+    }
   };
-
-
 
   handleChange = panel => (event, expanded) => {
     this.setState({
@@ -97,7 +105,11 @@ class TasksViewer extends React.Component {
   };
 
   handleChangeTime = prop => event => {
-    this.setState({ [prop]: event.target.value });
+
+    const hDur = {[prop]: event.target.value.taskLife}
+    const prueba = (( hDur === "custom") ? 'verdadero' : 'falso' );
+    console.log("Resultado: " + prueba);
+
   };
 
   render(){
@@ -326,44 +338,63 @@ fullWidth
           </Grid>
         </Grid>
         <Divider />
-        <Grid item xs={12}>
-          <ExpansionPanel expanded={expanded === 'panel6'} onChange={this.handleChange('panel6')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <div style={style.column}>
-          <ListItemIcon>
-            <AssignmentOutlinedIcon /> <ListItemText inset primary="Tarea nueva" />
-          </ListItemIcon>
-          </div>
-          <div style={style.column}>
-            <Typography style={style.secondaryHeading}>Duración...</Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={style.details}>
-          <div style={style.column}/>
-          <div style={style.column}>
-            Aquí irá un reloj
-          </div>
-          <div style={style.column}>
-          <div style={style.helper}>
+        <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
+          <Paper elevation={2} style={style.PaperT}>
+            <ExpansionPanel expanded={expanded === 'tnueva'} onChange={this.handleChange('tnueva')}>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Grid item xs={12}>
+                    <TextField id="taskTitle" label="Tarea" placeholder="¿Qué hay que hacer?" variant="outlined" margin="dense"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentOutlinedIcon color="error"/>
+                        </InputAdornment>
+                      )
+                    }}/>
+                </Grid>
+              </ExpansionPanelSummary>
 
-            <Typography variant="caption">
-              Select your destination of choice
-              <br />
-              <a href="#sub-labels-and-columns" style={style.link}>
-                Learn more
-              </a>
-            </Typography>
-            </div>
-          </div>
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
-            Save
-          </Button>
-        </ExpansionPanelActions>
-          </ExpansionPanel>
+              <Divider />
+
+              <ExpansionPanelDetails >
+                <Grid container direction="column" justify="space-around" alignItems="stretch">
+                  <Grid item>
+                    <TextField id="taskDesc" multiline label="Descripción" variant="outlined" rows="2" rowsMax="3"
+                    placeholder="Describe la tarea" margin="dense" fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SubtitlesOutlinedIcon color="error"/>
+                        </InputAdornment>
+                      )
+                    }}/>
+                  </Grid>
+                  <Grid item>
+                    <TextField id="taskLife" select label="Duración" variant="outlined" margin="dense" fullWidth
+                    value={this.state.tasks.taskLife} onChange={this.handleChangeTime('taskLife')}
+                    InputProps={{
+                      startAdornment:
+                        <InputAdornment position="start">
+                          <WatchLaterOutlinedIcon color="error"/>
+                        </InputAdornment>
+                    }}>
+                      {ranges.map(option => (<MenuItem  value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                      ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
+                </ExpansionPanelDetails>
+
+                <Divider />
+
+                <ExpansionPanelActions>
+                <Button variant="outlined" size="small"><DeleteIcon/></Button>
+                <Button variant="outlined" size="small" ><SaveOutlinedIcon/>Save</Button>
+              </ExpansionPanelActions>
+            </ExpansionPanel>
+            </Paper>
         </Grid>
       </Grid>
     );
