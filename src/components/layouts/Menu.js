@@ -5,3 +5,7 @@
   </MenuItem>
 ))}
 </MenuList>
+
+this.setState( {[prop]: event.target.value} === "custom" ? "pedro" : {[prop]: event.target.value}
+);
+console.log(this.state.TLast);
