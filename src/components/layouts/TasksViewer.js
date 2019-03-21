@@ -35,7 +35,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 const innerTheme = createMuiTheme({
   palette: {
     primary: {
-      main: "rgba(255, 255, 255, 1)",
+      main: 'rgba(255, 255, 255, 1)',
     }
   }
 });
@@ -92,11 +92,11 @@ class TasksViewer extends React.Component {
   state = {
         expanded: null,
         tTitle: 'Pasear al prro',
-        tDesc: "Tenemos que pasear al prro",
+        tDesc: 'Tenemos que pasear al prro',
         tLife: '',
         tActive: false,
-        tBirthDate: "",
-        tDeathDate: ""
+        tBirthDate: '',
+        tDeathDate: ''
 
   };
 
@@ -114,7 +114,7 @@ class TasksViewer extends React.Component {
 
   handleChangeLife = (event, evalue) => {
 
-    console.log("Resultado: " + {tLife: evalue});
+    console.log('Resultado: ' + {tLife: evalue});
   }
 
   render(){
@@ -130,14 +130,14 @@ class TasksViewer extends React.Component {
     return (
       <Grid item>
         <Toolbar>
-          <Grid container alignItems="center" justify="space-between">
+          <Grid container alignItems='center' justify='space-between'>
             <Grid item>
-              <Typography variant="h6">Tareas</Typography>
+              <Typography variant='h6'>Tareas</Typography>
             </Grid >
             <Grid item>
-              <Tooltip TransitionComponent={Zoom} title="Filtrar">
+              <Tooltip TransitionComponent={Zoom} title='Filtrar'>
                 <MuiThemeProvider theme={innerTheme}>
-                  <IconButton color="primary"><FilterListIcon fontSize="small" /></IconButton>
+                  <IconButton color='primary'><FilterListIcon fontSize='small' /></IconButton>
                 </MuiThemeProvider>
               </Tooltip>
             </Grid >
@@ -151,14 +151,14 @@ class TasksViewer extends React.Component {
 
 
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-<Grid container  alignItems="center" justify="space-between">
+<Grid container  alignItems='center' justify='space-between'>
               <Grid item>
                   <ListItemIcon>
-                    <AssignmentOutlinedIcon color="secondary"/> <ListItemText inset primary="Tarea 117" />
+                    <AssignmentOutlinedIcon color='secondary'/> <ListItemText inset primary='Tarea 117' />
                   </ListItemIcon>
                 </Grid>
                 <Grid item>
-                  <Typography variant="caption" >Duración: 15:32</Typography>
+                  <Typography variant='caption' >Duración: 15:32</Typography>
                   </Grid>
                   <Grid item>
                     </Grid>
@@ -171,20 +171,20 @@ class TasksViewer extends React.Component {
               <MuiThemeProvider theme={innerTheme}>
               <Grid
   container
-  direction="column"
-  justify="space-around"
-  alignItems="stretch"
+  direction='column'
+  justify='space-around'
+  alignItems='stretch'
 >
               <Grid item >
 
               <TextField
           select
-          label="Duración"
-          variant="outlined"
+          label='Duración'
+          variant='outlined'
 fullWidth
           value={this.state.weightRange}
           InputProps={{
-            startAdornment: <InputAdornment position="end">mm:ss</InputAdornment>,
+            startAdornment: <InputAdornment position='end'>mm:ss</InputAdornment>,
           }}
         >
         {ranges.map(option => (
@@ -199,10 +199,10 @@ fullWidth
                     <TextField
 fullWidth
         multiline
-        label="Descripción"
-          variant="outlined"
-        rowsMax="3"
-        placeholder="Describe la tarea"
+        label='Descripción'
+          variant='outlined'
+        rowsMax='3'
+        placeholder='Describe la tarea'
 
 
       />
@@ -217,8 +217,8 @@ fullWidth
 
 
                 <ExpansionPanelActions>
-                  <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
-                  <Button variant="outlined" size="small" ><SaveOutlinedIcon/>Save</Button>
+                  <Button variant='outlined' size='small'><DeleteOutlinedIcon/></Button>
+                  <Button variant='outlined' size='small' ><SaveOutlinedIcon/>Save</Button>
                 </ExpansionPanelActions>
               </ExpansionPanel>
               </Paper>
@@ -229,7 +229,7 @@ fullWidth
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div style={style.column}>
           <ListItemIcon>
-            <AssignmentOutlinedIcon /> <ListItemText inset primary="Tarea 150" />
+            <AssignmentOutlinedIcon /> <ListItemText inset primary='Tarea 150' />
           </ListItemIcon>
           </div>
           <div style={style.column}>
@@ -243,10 +243,10 @@ fullWidth
           </div>
           <div style={style.column}>
           <div style={style.helper}>
-            <Typography variant="caption">
+            <Typography variant='caption'>
               Select your destination of choice
               <br />
-              <a href="#sub-labels-and-columns" style={style.link}>
+              <a href='#sub-labels-and-columns' style={style.link}>
                 Learn more
               </a>
             </Typography>
@@ -255,8 +255,8 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button size='small'>Cancel</Button>
+          <Button size='small' color='primary'>
             Save
           </Button>
         </ExpansionPanelActions>
@@ -267,7 +267,7 @@ fullWidth
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div style={style.column}>
           <ListItemIcon>
-            <AssignmentOutlinedIcon/> <ListItemText inset primary="Tarea 142" />
+            <AssignmentOutlinedIcon/> <ListItemText inset primary='Tarea 142' />
           </ListItemIcon>
           </div>
           <div style={style.column}>
@@ -282,10 +282,10 @@ fullWidth
           <div style={style.column}>
           <div style={style.helper}>
 
-            <Typography variant="caption">
+            <Typography variant='caption'>
               Select your destination of choice
               <br />
-              <a href="#sub-labels-and-columns" style={style.link}>
+              <a href='#sub-labels-and-columns' style={style.link}>
                 Learn more
               </a>
             </Typography>
@@ -294,8 +294,8 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button size='small'>Cancel</Button>
+          <Button size='small' color='primary'>
             Save
           </Button>
         </ExpansionPanelActions>
@@ -306,7 +306,7 @@ fullWidth
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div style={style.column}>
           <ListItemIcon>
-            <AssignmentOutlinedIcon /> <ListItemText inset primary="Tarea Daniel" />
+            <AssignmentOutlinedIcon /> <ListItemText inset primary='Tarea Daniel' />
           </ListItemIcon>
           </div>
           <div style={style.column}>
@@ -321,10 +321,10 @@ fullWidth
           <div style={style.column}>
           <div style={style.helper}>
 
-            <Typography variant="caption">
+            <Typography variant='caption'>
               Select your destination of choice
               <br />
-              <a href="#sub-labels-and-columns" style={style.link}>
+              <a href='#sub-labels-and-columns' style={style.link}>
                 Learn more
               </a>
             </Typography>
@@ -333,8 +333,8 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button size='small'>Cancel</Button>
+          <Button size='small' color='primary'>
             Save
           </Button>
         </ExpansionPanelActions>
@@ -347,11 +347,11 @@ fullWidth
             <ExpansionPanel expanded onChange={this.handleChange('tnueva')}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid item xs={12}>
-                    <TextField id="taskTitle" label="Tarea" placeholder="¿Qué hay que hacer?" variant="outlined" margin="dense"
+                    <TextField id='taskTitle' label='Tarea' placeholder='¿Qué hay que hacer?' variant='outlined' margin='dense'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
-                          <AssignmentOutlinedIcon color="error"/>
+                        <InputAdornment position='start'>
+                          <AssignmentOutlinedIcon color='error'/>
                         </InputAdornment>
                       )
                     }}/>
@@ -361,25 +361,25 @@ fullWidth
               <Divider />
 
               <ExpansionPanelDetails >
-                <Grid container direction="column" justify="space-around" alignItems="stretch">
+                <Grid container direction='column' justify='space-around' alignItems='stretch'>
                   <Grid item>
-                    <TextField id="taskDesc" multiline label="Descripción" variant="outlined" rows="2" rowsMax="3"
-                    placeholder="Describe la tarea" margin="dense" fullWidth
+                    <TextField id='taskDesc' multiline label='Descripción' variant='outlined' rows='2' rowsMax='3'
+                    placeholder='Describe la tarea' margin='dense' fullWidth
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
-                          <SubtitlesOutlinedIcon color="error"/>
+                        <InputAdornment position='start'>
+                          <SubtitlesOutlinedIcon color='error'/>
                         </InputAdornment>
                       )
                     }}/>
                   </Grid>
                   <Grid item>
-                    <TextField id="taskLife" select label="Duración" variant="outlined" margin="dense"
-                     helperText="Hola"
+                    <TextField id='taskLife' select label='Duración' variant='outlined' margin='dense'
+                     helperText='Hola'
                     InputProps={{
                       startAdornment:
-                        <InputAdornment position="start">
-                          <WatchLaterOutlinedIcon color="error"/>
+                        <InputAdornment position='start'>
+                          <WatchLaterOutlinedIcon color='error'/>
                         </InputAdornment>
                     }}>
                       {ranges.map(option => (
@@ -392,8 +392,8 @@ fullWidth
 
                       <FormControlLabel control={
                       <Checkbox onChange={this.handleCheck('taskActive')}
-                      value="checkedA" color="error"/>}
-                      label="Iniciar tarea después de guardar"
+                      value='checkedA' color='error'/>}
+                      label='Iniciar tarea después de guardar'
                       />
                     </Grid>
                   </Grid>
@@ -402,8 +402,8 @@ fullWidth
                 <Divider />
 
                 <ExpansionPanelActions>
-                <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
-                <Button variant="outlined" size="small" ><SaveOutlinedIcon/></Button>
+                <Button variant='outlined' size='small'><DeleteOutlinedIcon/></Button>
+                <Button variant='outlined' size='small' ><SaveOutlinedIcon/></Button>
               </ExpansionPanelActions>
             </ExpansionPanel>
             </Paper>

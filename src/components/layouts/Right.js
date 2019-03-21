@@ -29,14 +29,14 @@ class Right extends React.Component {
       <Grid item>
       <Grid item>
         <Paper style={style.PaperR}>
-          <AppBar position="static">
+          <AppBar position='static'>
             <Tabs
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="secondary"
-            variant="fullWidth">
-              <Tab label="Tareas pendientes" />
-              <Tab label="Tareas terminadas" />
+            indicatorColor='secondary'
+            variant='fullWidth'>
+              <Tab label='Tareas pendientes' />
+              <Tab label='Tareas terminadas' />
             </Tabs>
           </AppBar>
           </Paper>

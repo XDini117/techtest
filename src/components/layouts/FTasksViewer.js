@@ -31,10 +31,10 @@ render(){
   return (
     <Paper>
     <Toolbar>
-    <Grid container direction="column" justify="flex-start" alignItems="stretch"
+    <Grid container direction='column' justify='flex-start' alignItems='stretch'
 >
         <Grid item>
-          <Typography variant="h6">Tareas Completadas</Typography>
+          <Typography variant='h6'>Tareas Completadas</Typography>
         </Grid>
       </Grid>
     </Toolbar>
@@ -45,7 +45,7 @@ render(){
       >
         <ExpansionPanelSummary>
         <ListItemIcon>
-          <AssignmentTwoTone /> <ListItemText inset primary="Tarea 22" />
+          <AssignmentTwoTone /> <ListItemText inset primary='Tarea 22' />
         </ListItemIcon>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
@@ -63,7 +63,7 @@ render(){
       >
         <ExpansionPanelSummary>
         <ListItemIcon>
-          <AssignmentTwoTone /> <ListItemText inset primary="Tarea 5" />
+          <AssignmentTwoTone /> <ListItemText inset primary='Tarea 5' />
         </ListItemIcon>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
@@ -81,7 +81,7 @@ render(){
       >
         <ExpansionPanelSummary>
         <ListItemIcon>
-          <AssignmentTwoTone /> <ListItemText inset primary="Tarea 77" />
+          <AssignmentTwoTone /> <ListItemText inset primary='Tarea 77' />
         </ListItemIcon>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>

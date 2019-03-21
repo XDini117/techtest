@@ -5,16 +5,16 @@ import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 class Header  extends Component {
   render(){
     return(
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
-          <Grid container alignItems="center" justify="space-between">
+          <Grid container alignItems='center' justify='space-between'>
             <Grid item>
-              <Typography variant="h6" color="inherit">
+              <Typography variant='h6' color='inherit'>
                 Tech Test - Frontend
               </Typography>
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="secondary" fontSize="small">Tarea activa&nbsp;<WatchLaterOutlinedIcon fontSize="small" />&nbsp;{this.props.time}</Button>
+              <Button variant='outlined' color='secondary' fontSize='small'>Tarea activa&nbsp;<WatchLaterOutlinedIcon fontSize='small' />&nbsp;{this.props.time}</Button>
             </Grid>
           </Grid>
         </Toolbar>
