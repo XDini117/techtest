@@ -28,7 +28,9 @@ const theme = createMuiTheme({ //https://material-ui.com/customization/default-t
 });
 
 class App extends Component {
+
   render() {
+
     return (
       <div>
       <MuiThemeProvider theme={theme}>

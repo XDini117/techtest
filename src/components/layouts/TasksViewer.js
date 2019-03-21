@@ -23,6 +23,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import SubtitlesOutlinedIcon from '@material-ui/icons/SubtitlesOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
+import HistoryRoundedIcon from '@material-ui/icons/HistoryRounded';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -88,17 +89,43 @@ const style = {
 }
 
 class TasksViewer extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      tasks: [
+        {
+          title:"Reservar vuelos",
+          desc: "Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo",
+          life: "95:32",
+          active: "false",
+          died:"2019-03-15"
+        },
+        {
+          title:"Craftear LapBag",
+          desc: "Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop",
+          life: "60:00",
+          active: "false",
+          died:""
+        },
+        {
+          title:"Modificar hilo",
+          desc: "Optimizar función que crea subThread para que pueda ser detenido a merced",
+          life: "22:11",
+          active: "false",
+          died:"2019-03-17"
+        },
+        {
+          title:"Diseñar SlimeBoard",
+          desc: "Plasmar ideas de posible pizarrón 'relleno' de slime fosforescente",
+          life: "1:17",
+          active: "false",
+          died:"2019-03-19"
+        }
+      ],
+      expanded: null
+    };
+  }
 
-  state = {
-        expanded: null,
-        tTitle: 'Pasear al prro',
-        tDesc: "Tenemos que pasear al prro",
-        tLife: '',
-        tActive: false,
-        tBirthDate: "",
-        tDeathDate: ""
-
-  };
 
   handleChange = panel => (event, expanded) => {
     this.setState({
@@ -114,7 +141,7 @@ class TasksViewer extends React.Component {
 
   handleChangeLife = (event, evalue) => {
 
-    console.log("Resultado: " + {tLife: evalue});
+    console.log("Resultado: ");
   }
 
   render(){
@@ -144,6 +171,85 @@ class TasksViewer extends React.Component {
           </Grid>
         </Toolbar>
         <Grid container spacing={16}>
+
+        <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
+          <Paper elevation={2} style={style.PaperT}>
+            <ExpansionPanel expanded onChange={this.handleChange('task0')}>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Grid item xs={12}>
+                    <TextField id="taskTitle0" label="Tarea" value={this.state.tasks[0].title} variant="outlined" margin="dense"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentOutlinedIcon color="secondary"/>
+                        </InputAdornment>
+                      )
+                    }}/>
+                </Grid>
+              </ExpansionPanelSummary>
+
+              <Divider />
+
+              <ExpansionPanelDetails >
+                <Grid container direction="column" justify="space-around" alignItems="stretch">
+                  <Grid item>
+                    <TextField id="taskDesc0" multiline label="Descripción" variant="outlined" rows="2" rowsMax="3"
+                    value={this.state.tasks[0].desc} margin="dense" fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SubtitlesOutlinedIcon color="secondary"/>
+                        </InputAdornment>
+                      )
+                    }}/>
+                  </Grid>
+                  <Grid item>
+                    <TextField id="taskLife0" select label="Duración" variant="outlined" margin="dense"
+                    value={this.state.tasks[0].life}
+                    InputProps={{
+                      startAdornment:
+                        <InputAdornment position="start">
+                          <WatchLaterOutlinedIcon color="secondary"/>
+                        </InputAdornment>
+                    }}>
+                      {ranges.map(option => (
+                        <MenuItem key={option.value} value={option.value}
+                        onClick= {event => this.handleChangeLife(event, option.value)}>
+                        {option.label}
+                      </MenuItem>
+                      ))}
+                      </TextField>
+
+                      <TextField id="taskActive0" label="Activa" variant="outlined"
+                      margin="dense" fullWidth multiline
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <HistoryRoundedIcon color="secondary"/>
+                          </InputAdornment>
+                        )
+                      }}>
+                        <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
+                      </TextField>
+
+                      <FormControlLabel control={
+                      <Checkbox onChange={this.handleCheck('taskActive')}
+                      value="checkedA" color="error"/>}
+                      label="Iniciar tarea después de guardar"
+                      />
+                    </Grid>
+                  </Grid>
+                </ExpansionPanelDetails>
+
+                <Divider />
+
+                <ExpansionPanelActions>
+                <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
+                <Button variant="outlined" size="small" ><SaveOutlinedIcon/></Button>
+              </ExpansionPanelActions>
+            </ExpansionPanel>
+            </Paper>
+        </Grid>
 
           <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
           <Paper elevation={2} style={style.PaperT}>
