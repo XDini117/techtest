@@ -2,9 +2,9 @@
 
 Instalar desde consola los paquetes:
 
-material-ui/core
-material-ui/icons
-react-swipeable-views
+material-ui/core<br>
+material-ui/icons<br>
+react-swipeable-views<br>
 
 In the project directory, you can run:
 
