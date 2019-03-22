@@ -24,13 +24,29 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import SubtitlesOutlinedIcon from '@material-ui/icons/SubtitlesOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import HistoryRoundedIcon from '@material-ui/icons/HistoryRounded';
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox';
+import StopIcon from '@material-ui/icons/Stop';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 //Intentar si mejora con xs=auto
 
 const innerTheme = createMuiTheme({
@@ -94,35 +110,37 @@ class TasksViewer extends React.Component {
     this.state = {
       tasks: [
         {
-          title:"Reservar vuelos",
-          desc: "Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo",
-          life: "95:32",
-          active: "false",
-          died:"2019-03-15"
+          title:'Reservar vuelos',
+          desc: 'Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo',
+          life: '95:32',
+          active: 'false',
+          died:'2019-03-15'
         },
         {
-          title:"Craftear LapBag",
-          desc: "Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop",
-          life: "60:00",
-          active: "false",
-          died:""
+          title:'Craftear LapBag',
+          desc: 'Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop',
+          life: '60:00',
+          active: 'false',
+          died:''
         },
         {
-          title:"Modificar hilo",
-          desc: "Optimizar función que crea subThread para que pueda ser detenido a merced",
-          life: "22:11",
-          active: "false",
-          died:"2019-03-17"
+          title:'Modificar hilo',
+          desc: 'Optimizar función que crea subThread para que pueda ser detenido a merced',
+          life: '22:11',
+          active: 'false',
+          died:'2019-03-17'
         },
         {
-          title:"Diseñar SlimeBoard",
-          desc: "Plasmar ideas de posible pizarrón 'relleno' de slime fosforescente",
-          life: "1:17",
-          active: "false",
-          died:"2019-03-19"
+          title:'Diseñar SlimeBoard',
+          desc: 'Plasmar ideas de posible pizarrón "relleno" de slime fosforescente',
+          life: '1:17',
+          active: 'false',
+          died:'2019-03-19'
         }
       ],
-      expanded: null
+      expanded: null,
+      open: false,
+      dswitch: true,
     };
   }
 
@@ -139,12 +157,25 @@ class TasksViewer extends React.Component {
     });
   };
 
+  handleSwitch = event => {
+    this.setState({ dswitch: event.target.checked});
+  };
+
   handleChangeLife = (event, evalue) => {
 
-    console.log("Resultado: ");
+    console.log('Resultado: ');
   }
 
+  handleDialogOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ open: false });
+  };
+
   render(){
+    const { fullScreen } = this.props;
     const { expanded } = this.state;
 
     const tam = {
@@ -177,11 +208,11 @@ class TasksViewer extends React.Component {
             <ExpansionPanel expanded onChange={this.handleChange('task0')}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid item xs={12}>
-                    <TextField id="taskTitle0" label="Tarea" value={this.state.tasks[0].title} variant="outlined" margin="dense"
+                    <TextField id='taskTitle0' label='Tarea' value={this.state.tasks[0].title} variant='outlined' margin='dense'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
-                          <AssignmentOutlinedIcon color="secondary"/>
+                        <InputAdornment position='start'>
+                          <AssignmentOutlinedIcon color='secondary'/>
                         </InputAdornment>
                       )
                     }}/>
@@ -191,52 +222,66 @@ class TasksViewer extends React.Component {
               <Divider />
 
               <ExpansionPanelDetails >
-                <Grid container direction="column" justify="space-around" alignItems="stretch">
+                <Grid container direction='column' justify='space-around' alignItems='stretch'>
                   <Grid item>
-                    <TextField id="taskDesc0" multiline label="Descripción" variant="outlined" rows="2" rowsMax="3"
-                    value={this.state.tasks[0].desc} margin="dense" fullWidth
+                    <TextField id='taskDesc0' multiline label='Descripción' variant='outlined' rows='2' rowsMax='3'
+                    value={this.state.tasks[0].desc} margin='dense' fullWidth
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
-                          <SubtitlesOutlinedIcon color="secondary"/>
+                        <InputAdornment position='start'>
+                          <SubtitlesOutlinedIcon color='secondary'/>
                         </InputAdornment>
                       )
                     }}/>
                   </Grid>
                   <Grid item>
-                    <TextField id="taskLife0" select label="Duración" variant="outlined" margin="dense"
-                    value={this.state.tasks[0].life}
+                    <TextField id='taskLife0' label='Duración' variant='outlined'
+                    margin='dense' fullWidth type='button' onClick={this.handleDialogOpen}
                     InputProps={{
                       startAdornment:
-                        <InputAdornment position="start">
-                          <WatchLaterOutlinedIcon color="secondary"/>
+                        <InputAdornment position='start'>
+                          <WatchLaterOutlinedIcon color='secondary'/>
+                          &nbsp;&nbsp;Tiempo:&nbsp;{this.state.tasks[0].life}
                         </InputAdornment>
                     }}>
-                      {ranges.map(option => (
-                        <MenuItem key={option.value} value={option.value}
-                        onClick= {event => this.handleChangeLife(event, option.value)}>
-                        {option.label}
-                      </MenuItem>
-                      ))}
                       </TextField>
 
-                      <TextField id="taskActive0" label="Activa" variant="outlined"
-                      margin="dense" fullWidth multiline
+                      <Dialog fullScreen={fullScreen} open={this.state.open} onClose={this.handleDialogClose}>
+                      <DialogTitle id="dialogTitle">{"Duración estimada"}</DialogTitle>
+                      <Divider/>
+                      <DialogContent>
+                      <FormControlLabel
+                      control={
+                        <Switch
+                        checked={this.state.dswitch}
+                        onChange={this.handleSwitch}
+                        />
+          }
+          label="Secondary"
+        />
+
+
+
+                      </DialogContent>
+                      <Divider/>
+                      <DialogActions>
+                      <Button onClick={this.handleDialogClose} color="primary">Cancelar</Button>
+                      <Button onClick={this.handleDialogClose} color="primary" autoFocus>Guardar</Button>
+          </DialogActions>
+        </Dialog>
+
+                      <TextField id='taskActive0' label='Estado' variant='outlined'
+                      margin='dense' fullWidth type='button'
                       InputProps={{
                         startAdornment: (
-                          <InputAdornment position="start">
-                            <HistoryRoundedIcon color="secondary"/>
+                          <InputAdornment position='start'>
+                            <HistoryRoundedIcon color='secondary'/>
+                            <IconButton color='error'><StopIcon /></IconButton>
+                            <IconButton color='error'><PauseIcon /></IconButton>
+                            <IconButton color='error'><PlayArrowIcon /></IconButton>
                           </InputAdornment>
                         )
-                      }}>
-                        <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
-                      </TextField>
-
-                      <FormControlLabel control={
-                      <Checkbox onChange={this.handleCheck('taskActive')}
-                      value="checkedA" color="error"/>}
-                      label="Iniciar tarea después de guardar"
-                      />
+                      }}/>
                     </Grid>
                   </Grid>
                 </ExpansionPanelDetails>
@@ -244,8 +289,16 @@ class TasksViewer extends React.Component {
                 <Divider />
 
                 <ExpansionPanelActions>
-                <Button variant="outlined" size="small"><DeleteOutlinedIcon/></Button>
-                <Button variant="outlined" size="small" ><SaveOutlinedIcon/></Button>
+                <Grid container direction="row"  justify="space-between" alignItems="center">
+
+                <Grid item>
+                <Button size='small'><DeleteIcon/></Button>
+                </Grid>
+                <Grid item>
+                <Button size='small'><EditIcon/></Button>
+                <Button size='small' ><SaveIcon/></Button>
+                </Grid>
+                </Grid>
               </ExpansionPanelActions>
             </ExpansionPanel>
             </Paper>
@@ -323,8 +376,9 @@ fullWidth
 
 
                 <ExpansionPanelActions>
-                  <Button variant='outlined' size='small'><DeleteOutlinedIcon/></Button>
-                  <Button variant='outlined' size='small' ><SaveOutlinedIcon/>Save</Button>
+                <Button size='small'><EditIcon/></Button>
+                <Button size='small'><DeleteIcon/></Button>
+                <Button size='small' ><SaveIcon/></Button>
                 </ExpansionPanelActions>
               </ExpansionPanel>
               </Paper>
@@ -361,10 +415,9 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size='small'>Cancel</Button>
-          <Button size='small' color='primary'>
-            Save
-          </Button>
+        <Button size='small'><EditIcon/></Button>
+        <Button size='small'><DeleteIcon/></Button>
+        <Button size='small' ><SaveIcon/></Button>
         </ExpansionPanelActions>
             </ExpansionPanel>
           </Grid>
@@ -400,10 +453,9 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size='small'>Cancel</Button>
-          <Button size='small' color='primary'>
-            Save
-          </Button>
+        <Button size='small'><EditIcon/></Button>
+        <Button size='small'><DeleteIcon/></Button>
+        <Button size='small' ><SaveIcon/></Button>
         </ExpansionPanelActions>
             </ExpansionPanel>
           </Grid>
@@ -439,10 +491,9 @@ fullWidth
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size='small'>Cancel</Button>
-          <Button size='small' color='primary'>
-            Save
-          </Button>
+        <Button size='small'><EditIcon/></Button>
+        <Button size='small'><DeleteIcon/></Button>
+        <Button size='small' ><SaveIcon/></Button>
         </ExpansionPanelActions>
             </ExpansionPanel>
           </Grid>
@@ -450,10 +501,10 @@ fullWidth
         <Divider />
         <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
           <Paper elevation={2} style={style.PaperT}>
-            <ExpansionPanel expanded onChange={this.handleChange('tnueva')}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <ExpansionPanel expanded>
+              <ExpansionPanelDetails>
                 <Grid item xs={12}>
-                    <TextField id='taskTitle' label='Tarea' placeholder='¿Qué hay que hacer?' variant='outlined' margin='dense'
+                    <TextField id='taskTitle' label='Tarea' placeholder='¿Qué hay que hacer?' variant='outlined' margin='dense' fullWidth
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position='start'>
@@ -462,7 +513,7 @@ fullWidth
                       )
                     }}/>
                 </Grid>
-              </ExpansionPanelSummary>
+              </ExpansionPanelDetails>
 
               <Divider />
 
@@ -481,7 +532,6 @@ fullWidth
                   </Grid>
                   <Grid item>
                     <TextField id='taskLife' select label='Duración' variant='outlined' margin='dense'
-                     helperText='Hola'
                     InputProps={{
                       startAdornment:
                         <InputAdornment position='start'>
@@ -508,8 +558,8 @@ fullWidth
                 <Divider />
 
                 <ExpansionPanelActions>
-                <Button variant='outlined' size='small'><DeleteOutlinedIcon/></Button>
-                <Button variant='outlined' size='small' ><SaveOutlinedIcon/></Button>
+                <Button size='small'><DeleteIcon/></Button>
+                <Button size='small' ><SaveIcon/></Button>
               </ExpansionPanelActions>
             </ExpansionPanel>
             </Paper>

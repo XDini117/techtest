@@ -14,7 +14,7 @@ class Header  extends Component {
               </Typography>
             </Grid>
             <Grid item>
-              <Button variant='outlined' color='secondary' fontSize='small'>Tarea activa&nbsp;<WatchLaterOutlinedIcon fontSize='small' />&nbsp;{this.props.time}</Button>
+              <Button variant='outlined' color='secondary' size='small'>Tarea activa&nbsp;<WatchLaterOutlinedIcon fontSize='small' />&nbsp;{this.props.time}</Button>
             </Grid>
           </Grid>
         </Toolbar>

@@ -4,21 +4,18 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({ //https://material-ui.com/customization/default-theme/?expend-path=$.palette
   palette: {
-    common:{
-      black: "#000",
-      white: "#fff"
-    },
+
     background:{
-      paper: "#545454"
+      paper: "#22293f"
     },
     primary: {
-      main: "#000",
+      main: "#22293f",
     },
     secondary: {
-      main: "#1dc85a",
+      main: "#6a7ecc",
     },
     error: {
-      main: "#1188d6",
+      main: "#343e62",
     },
     text:{
       primary:"#fff",
