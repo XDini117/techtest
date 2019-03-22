@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
@@ -42,6 +42,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 
+import NewTask from './NewTask';
+
 const innerTheme = createMuiTheme({
   palette: {
     primary: {
@@ -78,7 +80,7 @@ const style = {
   }
 }
 
-class TasksViewer extends React.Component {
+class TasksViewer extends Component {
   constructor() {
     super();
     this.state = {
@@ -88,6 +90,7 @@ class TasksViewer extends React.Component {
           desc: 'Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo',
           life: '95:32',
           active: true,
+          finished: false,
           died:'2019-03-15'
         },
         {
@@ -95,6 +98,7 @@ class TasksViewer extends React.Component {
           desc: 'Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop',
           life: '60:00',
           active: false,
+          finished: false,
           died:''
         },
         {
@@ -102,6 +106,7 @@ class TasksViewer extends React.Component {
           desc: 'Optimizar función que crea subThread para que pueda ser detenido a merced',
           life: '22:11',
           active: false,
+          finished: false,
           died:'2019-03-17'
         },
         {
@@ -109,19 +114,41 @@ class TasksViewer extends React.Component {
           desc: 'Plasmar ideas de posible pizarrón "relleno" de slime fosforescente',
           life: '1:17',
           active: false,
+          finished: false,
           died:'2019-03-19'
         }
       ],
       expanded: null,
       open: false,
-      dswitch: true,
-      edit:false,
+      readable: true,
       defaultDate: new Date(1970,1,1,0), // the same, hours etc are 0 by default
-    };
+    }
+    this.handleAddTask = this.handleAddTask.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  printSth = (event, evalue) => {
-    console.log(this.state.defaultDate);
+  removeTask(index) {
+    if(window.confirm('¿Desea borrar esta tarea?')){
+      this.setState({
+        tasks: this.state.tasks.filter((e, i) => {
+          return i !== index
+        })
+      });
+    }
+  }
+
+  handleAddTask(task) {
+    this.setState({
+      tasks: [...this.state.tasks, task]
+    })
+  }
+
+  handleInputChange(e) {
+    const {value, name} = e.target;
+    console.log(value , name);
+    this.setState({
+      [name]: value
+    });
   }
 
   handleChange = panel => (event, expanded) => {
@@ -130,44 +157,22 @@ class TasksViewer extends React.Component {
     });
   };
 
-  handleCheck = panel => (event, expanded) => {
-    this.setState({
-      expanded: expanded ? panel : false,
-    });
+  handleEditable = () => {
+    this.setState({ readable: !(this.state.readable)});
   };
 
-  handleSwitch = event => {
-    this.setState({ dswitch: event.target.checked});
-  };
 
-  handleChangeLife = (event, evalue) => {
-    console.log('Resultado: ');
-  }
 
-  handleDialogOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDialogClose = () => {
-    this.setState({ open: false });
-  };
 
   render(){
     const { expanded } = this.state;
 
-    const tam = {
-      xs: 12,
-      sm: 12,
-      md: 6,
-      lg: 4,
-      xl: 3
-    };
     return (
       <Grid item>
         <Toolbar>
           <Grid container alignItems='center' justify='space-between'>
             <Grid item>
-              <Typography variant='h6'>Tareas</Typography>
+              <Typography variant='h6'>Tareas {this.state.tasks.length}</Typography>
             </Grid >
             <Grid item>
               <Tooltip TransitionComponent={Zoom} title='Filtrar'>
@@ -180,18 +185,20 @@ class TasksViewer extends React.Component {
         </Toolbar>
         <Grid container spacing={16}>
           {this.state.tasks.map((task, i) => (
-            <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
               <Paper elevation={2} style={style.PaperT}>
                 <ExpansionPanel expanded={expanded === i} onChange={this.handleChange(i)}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Grid item xs={12}>
-                      <TextField label='Tarea' value={task.title} variant='outlined' margin='dense'
+                      <TextField name='title' label='Título' variant='outlined' margin='dense'
+                      fullWidth value={task.title}
                       InputProps={{
                           startAdornment: (
                             <InputAdornment position='start'>
                               <AssignmentOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
                             </InputAdornment>
-                          )
+                          ),
+                          readOnly: this.state.readable,
                       }}/>
                     </Grid>
                   </ExpansionPanelSummary>
@@ -201,48 +208,28 @@ class TasksViewer extends React.Component {
                   <ExpansionPanelDetails>
                     <Grid container direction='column' justify='space-around' alignItems='stretch'>
                       <Grid item>
-                        <TextField multiline label='Descripción' variant='outlined'
-                        value={task.desc} margin='dense' fullWidth
+                        <TextField multiline name='desc' label='Descripción' variant='outlined'
+                        margin='dense' rowsMax="10" fullWidth value={task.desc}
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
                                 <SubtitlesOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
-                              </InputAdornment>
-                            )
+                              </InputAdornment>),
+                            readOnly: this.state.readable,
                         }}/>
                       </Grid>
                       <Grid item>
                         <TextField label='Duración' variant='outlined'
-                        margin='dense' fullWidth type='button' onClick={this.handleDialogOpen}
+                        margin='dense' fullWidth type='button'
                         InputProps={{
-                            startAdornment:
+                            startAdornment: (
                               <InputAdornment position='start'>
                                 <WatchLaterOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
                                 &nbsp;&nbsp;Tiempo:&nbsp;{task.life}
-                              </InputAdornment>
+                              </InputAdornment>),
+                            readOnly: this.state.readable,
                         }}/>
-                        <Dialog open={this.state.open} onClose={this.handleDialogClose}>
-                          <DialogTitle>"Duración estimada"</DialogTitle>
-                          <Divider/>
-                          <DialogContent>
-                            <FormControlLabel control={
-                              <Switch checked={this.state.dswitch} onChange={this.handleSwitch}
-                              />}label="Duración predeterminada"/>
-                            <RadioGroup value={this.state.value}>
-                              <FormControlLabel disabled={!(this.state.dswitch)} value="30" control={<Radio />} label="Corta: 30 min o menos" />
-                              <FormControlLabel disabled={!(this.state.dswitch)} value="60" control={<Radio />} label="Media: 30 min a 1 hr" />
-                              <FormControlLabel disabled={!(this.state.dswitch)} value="2" control={<Radio />} label="Larga: más de 1 hr" />
-                            </RadioGroup>
-                            <DialogContentText>
-                            Definir duración en minutos y segundos (Max dos horas).
-                            </DialogContentText>
-                          </DialogContent>
-                          <Divider/>
-                          <DialogActions>
-                            <Button onClick={this.handleDialogClose} color="secondary">Cancelar</Button>
-                            <Button onClick={this.printSth} color="secondary" autoFocus>Guardar</Button>
-                          </DialogActions>
-                        </Dialog>
+                        
                         <TextField id='taskActive0' label='Estado' variant='outlined'
                         margin='dense' fullWidth type='button'
                         InputProps={{
@@ -252,8 +239,8 @@ class TasksViewer extends React.Component {
                                 <IconButton color='error'><StopOutlinedIcon /></IconButton>
                                 <IconButton color='error'><PauseIcon /></IconButton>
                                 <IconButton color='error'><PlayArrowOutlinedIcon /></IconButton>
-                              </InputAdornment>
-                            )
+                              </InputAdornment>),
+                            readOnly: this.state.readable
                         }}/>
                       </Grid>
                     </Grid>
@@ -262,11 +249,9 @@ class TasksViewer extends React.Component {
                   <ExpansionPanelActions>
                     <Grid container direction="row"  justify="space-between" alignItems="center">
                       <Grid item>
-                        <Button size='small'><DeleteIcon/></Button>
+                        <Button size='small' onClick={this.removeTask.bind(this, i)}><DeleteIcon/></Button>
                       </Grid>
                       <Grid item>
-                        <Button size='small'><EditIcon/></Button>
-                        <Button size='small' ><SaveIcon/></Button>
                       </Grid>
                     </Grid>
                   </ExpansionPanelActions>
@@ -278,101 +263,9 @@ class TasksViewer extends React.Component {
 
         <Divider />
 
-        <Grid item xs={tam.xs} sm={tam.sm} md={tam.md} lg={tam.lg} xl={tam.xl}>
-          <Paper elevation={2} style={style.PaperT}>
-          <ExpansionPanel expanded onChange={this.handleChange('newTask')}>
-              <ExpansionPanelDetails>
-                <Grid item xs={12}>
-                    <TextField label='Tarea' placeholder='¿Qué hay que hacer?' variant='outlined' margin='dense' fullWidth
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <AssignmentOutlinedIcon />
-                        </InputAdornment>
-                      )
-                    }}/>
-                </Grid>
-              </ExpansionPanelDetails>
+        <Button size='small'><EditIcon/>Nueva tarea</Button>
+        <NewTask onAddTask={this.handleAddTask}/>
 
-              <Divider />
-<ExpansionPanelDetails >
-              <Grid container direction='column' justify='space-around' alignItems='stretch'>
-                <Grid item>
-                  <TextField multiline label='Descripción' variant='outlined'
-                  value={this.state.tasks[0].desc} margin='dense' fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <SubtitlesOutlinedIcon color='secondary'/>
-                      </InputAdornment>
-                    )
-                  }}/>
-                </Grid>
-                <Grid item>
-                  <TextField label='Duración' variant='outlined'
-                  margin='dense' fullWidth type='button' onClick={this.handleDialogOpen}
-                  InputProps={{
-                    startAdornment:
-                      <InputAdornment position='start'>
-                        <WatchLaterOutlinedIcon color='secondary'/>
-                        &nbsp;&nbsp;Tiempo:&nbsp;{this.state.tasks[0].life}
-                      </InputAdornment>
-                  }}>
-                    </TextField>
-
-                    <Dialog open={this.state.open} onClose={this.handleDialogClose}>
-                    <DialogTitle id="dialogTitle">{"Duración estimada"}</DialogTitle>
-                    <Divider/>
-                    <DialogContent>
-                    <FormControlLabel
-                    control={
-                      <Switch
-                      checked={this.state.dswitch}
-                      onChange={this.handleSwitch}
-                    />}label="Duración predeterminada"/>
-                    <RadioGroup name="duration0" value={this.state.value} >
-          <FormControlLabel disabled={!(this.state.dswitch)} value="30" control={<Radio />} label="Corta: 30 min o menos" />
-          <FormControlLabel disabled={!(this.state.dswitch)} value="60" control={<Radio />} label="Media: 30 min a 1 hr" />
-          <FormControlLabel disabled={!(this.state.dswitch)} value="2" control={<Radio />} label="Larga: más de 1 hr" />
-        </RadioGroup>
-        <DialogContentText>
-        Definir duración en minutos y segundos (Max dos horas).
-
-
-          </DialogContentText>
-
-
-
-                    </DialogContent>
-                    <Divider/>
-                    <DialogActions>
-                    <Button onClick={this.handleDialogClose} color="secondary">Cancelar</Button>
-                    <Button onClick={this.printSth} color="secondary" autoFocus>Guardar</Button>
-        </DialogActions>
-      </Dialog>
-                  <Grid item>
-
-
-                      <FormControlLabel control={
-                      <Checkbox onChange={this.handleCheck('taskActive')}
-                      value='checkedA' color='error'/>}
-                      label='Iniciar tarea después de guardar'
-                      />
-                    </Grid>
-</Grid>
-
-                </Grid>
-                </ExpansionPanelDetails>
-
-                <Divider />
-
-                <ExpansionPanelActions>
-                <Button size='small'><DeleteIcon/></Button>
-                <Button size='small' ><SaveIcon/></Button>
-              </ExpansionPanelActions>
-            </ExpansionPanel>
-            </Paper>
-        </Grid>
       </Grid>
     );
   }

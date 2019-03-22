@@ -1,5 +1,11 @@
 ## Available Scripts
 
+Instalar desde consola los paquetes:
+
+material-ui/core
+material-ui/icons
+react-swipeable-views
+
 In the project directory, you can run:
 
 ### `npm start`
