@@ -45,7 +45,7 @@ class Right extends React.Component {
             <TasksViewer/>
             <FTasksViewer/>
           </SwipeableViews>
-</Grid>
+        </Grid>
     );
   }
 }

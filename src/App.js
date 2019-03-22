@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Header, Grids} from './components/layouts';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({ //https://material-ui.com/customization/default-theme/?expend-path=$.palette
+const theme = createMuiTheme({
   palette: {
 
     background:{
@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <div>
       <MuiThemeProvider theme={theme}>
-        <Header time="15:32"/>
+        <Header/>
         <Grids/>
         </MuiThemeProvider>
       </div>
