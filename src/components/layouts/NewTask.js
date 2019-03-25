@@ -57,10 +57,11 @@ class NewTask extends Component{
     this.state = {
       title: '',
       desc: '',
-      life: '',
+      timeInit: '',
+      timeElap: '0',
       active: false,
       finished: false,
-      died: '1995-09-06',
+      deathDt: '1995-09-06',
       open: false,
       dswitch: true,
       min: '0',
@@ -74,12 +75,13 @@ class NewTask extends Component{
     e.preventDefault(); //evita refrescar la screen
     this.props.onAddTask(this.state);
     this.setState({
-      title:'',
+      title: '',
       desc: '',
-      life: '',
+      timeInit: '',
+      timeElap: '0',
       active: false,
       finished: false,
-      died: '1995-09-06'
+      deathDt: '1995-09-06',
     });
   }
 
@@ -102,8 +104,8 @@ class NewTask extends Component{
     this.setState({ open: false });
   };
 
-  handleLife = () => {
-    this.setState({ life: "Tiempo: " + this.state.min +":" + this.state.sec});
+  handleTimeInit = () => {
+    this.setState({ timeInit: "Tiempo: " + this.state.min +":" + this.state.sec});
     this.handleDialogClose();
   };
 
@@ -146,8 +148,8 @@ class NewTask extends Component{
           }}/>
         </Grid>
         <Grid item>
-          <TextField name='life' label='Duración' variant='outlined'
-          margin='dense' fullWidth value={this.state.life} type='button' onClick={this.handleDialogOpen}
+          <TextField name='timeInit' label='Duración' variant='outlined'
+          margin='dense' fullWidth value={this.state.timeInit} type='button' onClick={this.handleDialogOpen}
           InputProps={{
             startAdornment:
               <InputAdornment position='start'>
@@ -226,7 +228,7 @@ InputLabelProps={{
               (parseInt(this.state.sec) > 59) ||
               ((parseInt(this.state.min * 60) + parseInt(this.state.sec)) <= 0)
             )}
-          onClick={this.handleLife} color="secondary">Guardar</Button>
+          onClick={this.handleTimeInit} color="secondary">Guardar</Button>
 </DialogActions>
 </Dialog>
 

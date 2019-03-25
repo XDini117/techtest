@@ -88,34 +88,38 @@ class TasksViewer extends Component {
         {
           title:'Reservar vuelos',
           desc: 'Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo',
-          life: '95:32',
+          timeInit: '95:32',
+          timeElap: '0',
           active: true,
           finished: false,
-          died:'2019-03-15'
+          deathDt:'2019-03-15'
         },
         {
           title:'Craftear LapBag',
           desc: 'Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop',
-          life: '60:00',
+          timeInit: '60:00',
+          timeElap: '0',
           active: false,
           finished: false,
-          died:''
+          deathDt:''
         },
         {
           title:'Modificar hilo',
           desc: 'Optimizar función que crea subThread para que pueda ser detenido a merced',
-          life: '22:11',
+          timeInit: '22:11',
+          timeElap: '0',
           active: false,
           finished: false,
-          died:'2019-03-17'
+          deathDt:'2019-03-17'
         },
         {
           title:'Diseñar SlimeBoard',
           desc: 'Plasmar ideas de posible pizarrón "relleno" de slime fosforescente',
-          life: '1:17',
+          timeInit: '1:17',
+          timeElap: '0',
           active: false,
           finished: false,
-          died:'2019-03-19'
+          deathDt:'2019-03-19'
         }
       ],
       expanded: null,
@@ -225,11 +229,11 @@ class TasksViewer extends Component {
                             startAdornment: (
                               <InputAdornment position='start'>
                                 <WatchLaterOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
-                                &nbsp;&nbsp;Tiempo:&nbsp;{task.life}
+                                &nbsp;&nbsp;Tiempo:&nbsp;{task.timeInit}
                               </InputAdornment>),
                             readOnly: this.state.readable,
                         }}/>
-                        
+
                         <TextField id='taskActive0' label='Estado' variant='outlined'
                         margin='dense' fullWidth type='button'
                         InputProps={{
