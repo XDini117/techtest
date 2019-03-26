@@ -24,7 +24,6 @@ class Grids extends Component {
 
     const { selected } = this.state;
 
-
     return(
       <Grid container>
         <Grid item xs={12} sm={3} md={3} lg={2} xl={2}>
@@ -42,8 +41,8 @@ class Grids extends Component {
               <Divider/>
               <MenuList>
                 <MenuItem selected = {selected === 'about'} onClick = {event => this.handleSelectItem(event, 'about')}>
-                  <ListItemIcon><ContactSupportIcon color = {selected === 'about' ? 'secondary' : 'default'}/></ListItemIcon>
-                  <Typography variant='inherit' noWrap >About</Typography>
+                  <ListItemIcon ><ContactSupportIcon color = {selected === 'about' ? 'secondary' : 'default'}/></ListItemIcon>
+                  <Typography variant='inherit' noWrap>About</Typography>
                 </MenuItem>
               </MenuList>
             </Paper>
