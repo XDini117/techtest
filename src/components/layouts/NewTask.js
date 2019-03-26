@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import SubtitlesOutlinedIcon from '@material-ui/icons/SubtitlesOutlined';
@@ -26,28 +27,33 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 
+const pTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#6e768d",
+    },
+    secondary: {
+      main: "#6a7ecc",
+    },
+    error: {
+      main: "#343e62",
+    },
+    background:{
+        paper: "#1d2336"
+      },
+    text:{
+        primary:"#fff",
+        secondary:"#6e768d"
+      },
+  }
+});
+
 const style = {
-  icon: {
-    verticalAlign: 'bottom',
-    height: 20,
-    width: 20,
-  },
-  details: {
-    alignItems: 'center',
-  },
-  column: {
-    flexBasis: '33.33%',
-  },
-  helper: {
-   borderLeft: '1px solid',
-   padding: '4px 8px'
- },
-  textField: {
-    flexBasis: 200,
-  },
   PaperT: {
-    marginLeft:2,
-    marginRight:2
+    marginTop: 2,
+    marginBottom: 8,
+    marginLeft: 2,
+    marginRight: 8,
   }
 }
 
@@ -117,6 +123,7 @@ class NewTask extends Component{
     return (
 
 <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+<MuiThemeProvider theme={pTheme}>
   <Paper elevation={2} style={style.PaperT}>
   <ExpansionPanel expanded>
       <ExpansionPanelDetails>
@@ -251,6 +258,7 @@ InputLabelProps={{
       </ExpansionPanelActions>
     </ExpansionPanel>
     </Paper>
+      </MuiThemeProvider>
 </Grid>
 
 )

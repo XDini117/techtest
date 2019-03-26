@@ -13,9 +13,9 @@ const theme = createMuiTheme({
       paper: "#22293f"
     },
     primary: {
-      main: "#22293f",
-      light: "#4b516a",
-      dark: "#000019",
+      main: "#1d2336",
+      light: "#454b60",
+      dark: "#000011",
     },
     secondary: {
       main: "#6a7ecc",
@@ -27,7 +27,7 @@ const theme = createMuiTheme({
     },
     text:{
       primary:"#fff",
-      secondary:"#000",
+      secondary:"#6e768d"
     },
     action: {
       active: "#6e768d",
