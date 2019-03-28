@@ -21,31 +21,31 @@ class Right extends React.Component {
     this.setState({ value });
   };
   handleChangeIndex = index => {
-  this.setState({ value: index });
+    this.setState({ value: index });
   };
 
   render() {
     return (
       <Grid item>
-      <Grid item>
-        <Paper style={style.PaperR}>
-          <AppBar position='static'>
-            <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor='secondary'
-            variant='fullWidth'>
-              <Tab label='Tareas pendientes' />
-              <Tab label='Tareas terminadas' />
-            </Tabs>
-          </AppBar>
+        <Grid item>
+          <Paper elevation={0} style={style.PaperR}>
+            <AppBar position='static'>
+              <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor='secondary'
+              variant='fullWidth'>
+                <Tab label='Tareas pendientes' />
+                <Tab label='Tareas completadas' />
+              </Tabs>
+            </AppBar>
           </Paper>
         </Grid>
-          <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
-            <TasksViewer/>
-            <FTasksViewer/>
-          </SwipeableViews>
-        </Grid>
+        <SwipeableViews index={this.state.value} onChangeIndex={this.handleChangeIndex}>
+          <TasksViewer/>
+          <FTasksViewer/>
+        </SwipeableViews>
+      </Grid>
     );
   }
 }

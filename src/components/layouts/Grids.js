@@ -31,18 +31,18 @@ class Grids extends Component {
               <MenuList>
                 <MenuItem selected = {selected === 'icon1'} onClick = {event => this.handleSelectItem(event, 'icon1')}>
                   <ListItemIcon><AssignmentIcon color = {selected === 'icon1' ? 'secondary' : 'default'}/></ListItemIcon>
-                  <Typography variant='inherit' noWrap>Tareas</Typography>
+                  <Typography variant='inherit' color = {selected === 'icon1' ? 'default' : 'textSecondary'} noWrap>Tareas</Typography>
                 </MenuItem>
                 <MenuItem selected = {selected === 'icon2'} onClick = {event => this.handleSelectItem(event, 'icon2')}>
                   <ListItemIcon><TrendingUpIcon color = {selected === 'icon2' ? 'secondary' : 'default'}/></ListItemIcon>
-                  <Typography variant='inherit' noWrap>Gráfica</Typography>
+                  <Typography variant='inherit' color = {selected === 'icon2' ? 'default' : 'textSecondary'} noWrap>Gráfica</Typography>
                 </MenuItem>
               </MenuList>
               <Divider/>
               <MenuList>
                 <MenuItem selected = {selected === 'about'} onClick = {event => this.handleSelectItem(event, 'about')}>
-                  <ListItemIcon><ContactSupportIcon color = {selected === 'about' ? 'secondary' : 'default'}/></ListItemIcon>
-                  <Typography variant='inherit' noWrap >About</Typography>
+                  <ListItemIcon ><ContactSupportIcon color = {selected === 'about' ? 'secondary' : 'default'}/></ListItemIcon>
+                  <Typography variant='inherit' color = {selected === 'about' ? 'default' : 'textSecondary'} noWrap>About</Typography>
                 </MenuItem>
               </MenuList>
             </Paper>

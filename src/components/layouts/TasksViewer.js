@@ -44,39 +44,33 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 
 import NewTask from './NewTask';
 
-const innerTheme = createMuiTheme({
+const pTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#9c9c9c',
+      main: "#6e768d",
+    },
     secondary: {
-        main: "#6a7ecc",
+      main: "#6a7ecc",
+    },
+    error: {
+      main: "#343e62",
+    },
+    background:{
+        paper: "#1d2336"
       },
-    }
+    text:{
+        primary:"#fff",
+        secondary:"#6e768d"
+      },
   }
 });
 
 const style = {
-  icon: {
-    verticalAlign: 'bottom',
-    height: 20,
-    width: 20,
-  },
-  details: {
-    alignItems: 'center',
-  },
-  column: {
-    flexBasis: '33.33%',
-  },
-  helper: {
-   borderLeft: '1px solid',
-   padding: '4px 8px'
- },
-  textField: {
-    flexBasis: 200,
-  },
   PaperT: {
-    marginLeft:2,
-    marginRight:2
+    marginTop: 2,
+    marginBottom: 8,
+    marginLeft: 2,
+    marginRight: 8,
   }
 }
 
@@ -165,9 +159,6 @@ class TasksViewer extends Component {
     this.setState({ readable: !(this.state.readable)});
   };
 
-
-
-
   render(){
     const { expanded } = this.state;
 
@@ -176,20 +167,19 @@ class TasksViewer extends Component {
         <Toolbar>
           <Grid container alignItems='center' justify='space-between'>
             <Grid item>
-              <Typography variant='h6'>Tareas {this.state.tasks.length}</Typography>
+              <Typography variant='h6'>Tareas: {this.state.tasks.length}</Typography>
             </Grid >
             <Grid item>
               <Tooltip TransitionComponent={Zoom} title='Filtrar'>
-                <MuiThemeProvider theme={innerTheme}>
-                  <IconButton color='primary'><FilterListIcon fontSize='small' /></IconButton>
-                </MuiThemeProvider>
+                  <IconButton color='textSecondary'><FilterListIcon fontSize='small' /></IconButton>
               </Tooltip>
             </Grid >
           </Grid>
         </Toolbar>
-        <Grid container spacing={16}>
+        <Grid container>
           {this.state.tasks.map((task, i) => (
             <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+              <MuiThemeProvider theme={pTheme}>
               <Paper elevation={2} style={style.PaperT}>
                 <ExpansionPanel expanded={expanded === i} onChange={this.handleChange(i)}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -199,7 +189,7 @@ class TasksViewer extends Component {
                       InputProps={{
                           startAdornment: (
                             <InputAdornment position='start'>
-                              <AssignmentOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
+                              <AssignmentOutlinedIcon color={task.active ? ('secondary') : ('primary')}/>
                             </InputAdornment>
                           ),
                           readOnly: this.state.readable,
@@ -217,7 +207,7 @@ class TasksViewer extends Component {
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <SubtitlesOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
+                                <SubtitlesOutlinedIcon color={task.active ? ('secondary') : ('primary')}/>
                               </InputAdornment>),
                             readOnly: this.state.readable,
                         }}/>
@@ -228,7 +218,7 @@ class TasksViewer extends Component {
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <WatchLaterOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
+                                <WatchLaterOutlinedIcon color={task.active ?  ('secondary') : ('primary')}/>
                                 &nbsp;&nbsp;Tiempo:&nbsp;{task.timeInit}
                               </InputAdornment>),
                             readOnly: this.state.readable,
@@ -239,7 +229,7 @@ class TasksViewer extends Component {
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <PlaylistPlayRoundedIcon color={task.active ? ('secondary') : ('error')}/>
+                                <PlaylistPlayRoundedIcon color={task.active ? ('secondary') : ('primary')}/>
                                 <IconButton color='error'><StopOutlinedIcon /></IconButton>
                                 <IconButton color='error'><PauseIcon /></IconButton>
                                 <IconButton color='error'><PlayArrowOutlinedIcon /></IconButton>
@@ -261,13 +251,13 @@ class TasksViewer extends Component {
                   </ExpansionPanelActions>
                 </ExpansionPanel>
               </Paper>
+                </MuiThemeProvider>
             </Grid>
           ))}
         </Grid>
 
         <Divider />
 
-        <Button size='small'><EditIcon/>Nueva tarea</Button>
         <NewTask onAddTask={this.handleAddTask}/>
 
       </Grid>
