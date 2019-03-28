@@ -33,6 +33,9 @@ import StopOutlinedIcon from '@material-ui/icons/StopOutlined';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PlaylistPlayRoundedIcon from '@material-ui/icons/PlaylistPlayRounded';
 import PauseIcon from '@material-ui/icons/Pause';
+import HistoryIcon from '@material-ui/icons/History';
+import DoneOutlinedIcon from '@material-ui/icons/DoneOutlined';
+import TimerIcon from '@material-ui/icons/Timer';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -41,6 +44,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import NewTask from './NewTask';
 
@@ -53,15 +57,16 @@ const pTheme = createMuiTheme({
       main: "#6a7ecc",
     },
     error: {
-      main: "#343e62",
+      main: "#445081",
     },
     background:{
-        paper: "#1d2336"
-      },
+      paper: "#1d2336"
+    },
     text:{
         primary:"#fff",
         secondary:"#6e768d"
       },
+    divider: "#161b2a",
   }
 });
 
@@ -82,8 +87,8 @@ class TasksViewer extends Component {
         {
           title:'Reservar vuelos',
           desc: 'Cotizar en distintas aerolíneas y considerar beneficios (por membresías) a largo plazo',
-          timeInit: '95:32',
-          timeElap: '0',
+          timeInit: '7042',
+          timeElap: '1812',
           active: true,
           finished: false,
           deathDt:'2019-03-15'
@@ -91,8 +96,8 @@ class TasksViewer extends Component {
         {
           title:'Craftear LapBag',
           desc: 'Coser telas de pantalones rotos para crear mochila/bolsa para cargar Laptop',
-          timeInit: '60:00',
-          timeElap: '0',
+          timeInit: '3600',
+          timeElap: '1818',
           active: false,
           finished: false,
           deathDt:''
@@ -100,8 +105,8 @@ class TasksViewer extends Component {
         {
           title:'Modificar hilo',
           desc: 'Optimizar función que crea subThread para que pueda ser detenido a merced',
-          timeInit: '22:11',
-          timeElap: '0',
+          timeInit: '1331',
+          timeElap: '1122',
           active: false,
           finished: false,
           deathDt:'2019-03-17'
@@ -109,7 +114,7 @@ class TasksViewer extends Component {
         {
           title:'Diseñar SlimeBoard',
           desc: 'Plasmar ideas de posible pizarrón "relleno" de slime fosforescente',
-          timeInit: '1:17',
+          timeInit: '77',
           timeElap: '0',
           active: false,
           finished: false,
@@ -120,20 +125,80 @@ class TasksViewer extends Component {
       open: false,
       readable: true,
       defaultDate: new Date(1970,1,1,0), // the same, hours etc are 0 by default
+      vertical: 'top',
+    horizontal: 'center',
     }
     this.handleAddTask = this.handleAddTask.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  removeTask(index) {
-    if(window.confirm('¿Desea borrar esta tarea?')){
-      this.setState({
-        tasks: this.state.tasks.filter((e, i) => {
-          return i !== index
-        })
+  stopTask = i => {
+    this.resetTaskElap(i);
+    this.pauseTask(i);
+  };
+
+  pauseTask = i => {
+    this.setState(state => {
+      const tasks = state.tasks.map((task, j) => {
+        if (j === i) {
+          return {...task, active: false};
+        } else {
+          return task;
+        }
       });
-    }
-  }
+
+      return {
+       tasks,
+      };
+    });
+  };
+
+  playTask = i => {
+    this.setState(state => {
+      const tasks = state.tasks.map((task, j) => {
+        if (j === i) {
+          return {...task, active: true};
+        } else {
+          return {...task, active: false};
+        }
+      });
+
+      return {
+       tasks,
+      };
+    });
+  };
+
+  finishTask = i => {
+    this.setState(state => {
+      const tasks = state.tasks.map((task, j) => {
+        if (j === i) {
+          return {...task, finished: true};
+        } else {
+          return task;
+        }
+      });
+
+      return {
+       tasks,
+      };
+    });
+  };
+
+  resetTaskElap = i => {
+    this.setState(state => {
+      const tasks = state.tasks.map((task, j) => {
+        if (j === i) {
+          return {...task, timeElap: '0'};
+        } else {
+          return task;
+        }
+      });
+
+      return {
+       tasks,
+      };
+    });
+  };
 
   handleAddTask(task) {
     this.setState({
@@ -141,12 +206,14 @@ class TasksViewer extends Component {
     })
   }
 
-  handleInputChange(e) {
-    const {value, name} = e.target;
-    console.log(value , name);
-    this.setState({
-      [name]: value
-    });
+  removeTask(index) {
+    if(window.confirm('¿Desea borrar la tarea ' + this.state.tasks[index].title + '?')){
+      this.setState({
+        tasks: this.state.tasks.filter((e, i) => {
+          return i !== index
+        })
+      });
+    }
   }
 
   handleChange = panel => (event, expanded) => {
@@ -159,9 +226,17 @@ class TasksViewer extends Component {
     this.setState({ readable: !(this.state.readable)});
   };
 
+  renderTimeInit(time){
+    if (time === '') {
+      return ('Min: 0 Seg: 0');
+    } else {
+      return ('Min: ' + parseInt(time/60) + ' Seg: ' +  (time - parseInt(time/60) * 60));
+    }
+  };
+
   render(){
     const { expanded } = this.state;
-
+    const { vertical, horizontal } = this.state;
     return (
       <Grid item>
         <Toolbar>
@@ -189,7 +264,7 @@ class TasksViewer extends Component {
                       InputProps={{
                           startAdornment: (
                             <InputAdornment position='start'>
-                              <AssignmentOutlinedIcon color={task.active ? ('secondary') : ('primary')}/>
+                              <AssignmentOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
                             </InputAdornment>
                           ),
                           readOnly: this.state.readable,
@@ -203,36 +278,61 @@ class TasksViewer extends Component {
                     <Grid container direction='column' justify='space-around' alignItems='stretch'>
                       <Grid item>
                         <TextField multiline name='desc' label='Descripción' variant='outlined'
-                        margin='dense' rowsMax="10" fullWidth value={task.desc}
+                        margin='dense' rows={4} fullWidth value={task.desc}
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <SubtitlesOutlinedIcon color={task.active ? ('secondary') : ('primary')}/>
+                                <SubtitlesOutlinedIcon color={task.active ? ('secondary') : ('error')}/>
                               </InputAdornment>),
                             readOnly: this.state.readable,
                         }}/>
                       </Grid>
                       <Grid item>
-                        <TextField label='Duración' variant='outlined'
-                        margin='dense' fullWidth type='button'
+                        <TextField name='timeInit' label='Duración' variant='outlined'
+                        margin='dense' fullWidth
+                        value={this.renderTimeInit(task.timeInit)}
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <WatchLaterOutlinedIcon color={task.active ?  ('secondary') : ('primary')}/>
-                                &nbsp;&nbsp;Tiempo:&nbsp;{task.timeInit}
+                                <WatchLaterOutlinedIcon color={task.active ?  ('secondary') : ('error')}/>
                               </InputAdornment>),
                             readOnly: this.state.readable,
                         }}/>
 
-                        <TextField id='taskActive0' label='Estado' variant='outlined'
+                        <TextField name='timeElap' label='Temporizador' variant='outlined'
+                        margin='dense' fullWidth
+                        value={this.renderTimeInit(task.timeInit - task.timeElap)}
+                        InputProps={{
+                            startAdornment: (
+                              <InputAdornment position='start'>
+                                <TimerIcon color={task.active ?  ('secondary') : ('error')}/>
+                              </InputAdornment>),
+                            readOnly: this.state.readable,
+                        }}/>
+
+                        <TextField name='taskActive' label='Estado' variant='outlined'
                         margin='dense' fullWidth type='button'
                         InputProps={{
                             startAdornment: (
                               <InputAdornment position='start'>
-                                <PlaylistPlayRoundedIcon color={task.active ? ('secondary') : ('primary')}/>
-                                <IconButton color='error'><StopOutlinedIcon /></IconButton>
-                                <IconButton color='error'><PauseIcon /></IconButton>
-                                <IconButton color='error'><PlayArrowOutlinedIcon /></IconButton>
+                                <PlaylistPlayRoundedIcon color={task.active ? ('secondary') : ('error')}/>
+                                <Tooltip title='Detener'>
+                                <IconButton disabled={!task.active} color='primary' onClick={() => this.stopTask(i)}><StopOutlinedIcon /></IconButton>
+                                </Tooltip>
+                                {!task.active &&
+                                <Tooltip title='Reproducir'>
+                                <IconButton color='primary' onClick={() => this.playTask(i)}> <PlayArrowOutlinedIcon /></IconButton>
+                                </Tooltip>}
+                                {task.active &&
+                                <Tooltip title='Pausar'>
+                                <IconButton color='primary' onClick={() => this.pauseTask(i)}><PauseIcon /></IconButton>
+                                </Tooltip>}
+                                <Tooltip title='Reiniciar'>
+                                <IconButton color='primary' onClick={() => this.resetTaskElap(i)}><HistoryIcon /></IconButton>
+                                </Tooltip>
+                                <Tooltip title='Terminar'>
+                                <IconButton color='primary' onClick={() => this.finishTask(i)}><DoneOutlinedIcon /></IconButton>
+                                </Tooltip>
                               </InputAdornment>),
                             readOnly: this.state.readable
                         }}/>

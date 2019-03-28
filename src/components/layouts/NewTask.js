@@ -37,7 +37,7 @@ const pTheme = createMuiTheme({
       main: "#6a7ecc",
     },
     error: {
-      main: "#343e62",
+      main: "#6a7ecc",
     },
     background:{
         paper: "#1d2336"
@@ -46,13 +46,14 @@ const pTheme = createMuiTheme({
         primary:"#fff",
         secondary:"#6e768d"
       },
+      divider: "#161b2a",
   }
 });
 
 const style = {
   PaperT: {
-    marginTop: 2,
-    marginBottom: 8,
+    marginTop: 6,
+    marginBottom: 10,
     marginLeft: 2,
     marginRight: 8,
   }
@@ -111,8 +112,6 @@ class NewTask extends Component{
   handleDialogClose = () => {
     this.setState({ open: false });
   };
-
-
 
   handleSwitch = event => {
     this.setState({ dswitch: event.target.checked});
@@ -215,12 +214,15 @@ class NewTask extends Component{
         </Grid>
         <Grid item>
           <TextField name='timeInit' label='Duración' variant='outlined'
-          margin='dense' fullWidth value={this.renderTimeInit(this.state.timeInit)} type='button' onClick={this.handleDialogOpen}
+          margin='dense' fullWidth
+          value={this.renderTimeInit(this.state.timeInit)}
+          onClick={this.handleDialogOpen}
           InputProps={{
-            startAdornment:
+            startAdornment:(
               <InputAdornment position='start'>
                 <WatchLaterOutlinedIcon/>
-              </InputAdornment>
+              </InputAdornment>),
+              readOnly: true,
           }}/>
 
           <Dialog open={this.state.open} onClose={this.handleDialogClose}>
@@ -240,7 +242,7 @@ class NewTask extends Component{
   <FormControlLabel disabled={!(this.state.dswitch)} value="lg" control={<Radio />} label="Larga: más de 1 hr" />
 </RadioGroup>
 <Divider />
-  <Typography noWrap variant={this.state.dswitch ? ('caption') : ('subheading')} >Definir duración en minutos y segundos. (máximo dos horas)</Typography>
+  <Typography variant={this.state.dswitch ? ('caption') : ('subheading')} >Definir duración en minutos y segundos. (máximo dos horas)</Typography>
 <Grid container direction="row"  justify="space-between" alignItems="flex-start">
 
   <Grid item>
@@ -295,12 +297,7 @@ InputLabelProps={{
 
 
           </Grid>
-          <Grid item>
-              <FormControlLabel control={
-              <Checkbox checked={this.state.active} onChange={this.handleCheck}/>}
-              label='Iniciar tarea después de guardar'
-              />
-        </Grid>
+
         </Grid>
         </ExpansionPanelDetails>
 
