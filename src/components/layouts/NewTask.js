@@ -25,6 +25,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 
 const style = {
   icon: {
@@ -57,7 +58,7 @@ class NewTask extends Component{
     this.state = {
       title: '',
       desc: '',
-      timeInit: '',
+      timeInit: '0',
       timeElap: '0',
       active: false,
       finished: false,
@@ -65,7 +66,8 @@ class NewTask extends Component{
       open: false,
       dswitch: true,
       min: '0',
-      sec: '0'
+      sec: '0',
+      duration: 'sh'
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,7 +79,7 @@ class NewTask extends Component{
     this.setState({
       title: '',
       desc: '',
-      timeInit: '',
+      timeInit: '0',
       timeElap: '0',
       active: false,
       finished: false,
@@ -104,16 +106,74 @@ class NewTask extends Component{
     this.setState({ open: false });
   };
 
-  handleTimeInit = () => {
-    this.setState({ timeInit: "Tiempo: " + this.state.min +":" + this.state.sec});
-    this.handleDialogClose();
-  };
+
 
   handleSwitch = event => {
     this.setState({ dswitch: event.target.checked});
   };
 
+  handleTimeInit = () => {
+    this.setState({ timeInit: parseInt(this.state.min) * 60 + parseInt(this.state.sec)});
+    this.handleDialogClose();
+  };
+
+  handleTimePred = () => {
+  switch (this.state.duration) {
+  case 'sh':
+    this.setState({ timeInit: 1800});
+    break;
+  case 'md':
+    this.setState({ timeInit: 3600});
+    break;
+  case 'lg':
+      this.setState({ timeInit: 7200});
+      break;
+  default:
+  this.setState({ timeInit: 0});
+}
+    this.handleDialogClose();
+  };
+
+  renderTimeInit(time){
+    if (time === '') {
+      return ('Min: 0 Seg: 0');
+    } else {
+      return ('Min: ' + parseInt(time/60) + ' Seg: ' +  (time - parseInt(time/60) * 60));
+    }
+  };
+
+  handleError(min, sec) {
+    var time = (parseInt(min) * 60 + parseInt(sec))
+    return ((time > 7200) || (time <= 0) || (min === '') || (sec === '') || (parseInt(sec) > 59) || (parseInt(sec) < 0))
+  };
+
+  renderHelperText(min, sec){
+    var time = (parseInt(min) * 60 + parseInt(sec))
+    if (time > 7200) {
+      return ('La duración es superior a 2 horas');
+    } else if (time <= 0) {
+      return ('La duración debe ser superior a 0');
+    } else if (min === '') {
+      return ('Ingrese minutos');
+    } else {
+      return ('');
+    }
+  };
+
+  renderHelperTextSec(sec){
+    if (sec === '') {
+      return ('Ingrese segundos');
+    } else if (parseInt(sec) > 59) {
+      return ('Los segundos deben ser menores a 60');
+    } else if (parseInt(sec) < 0) {
+      return ('Los segundos no pueden ser negativos');
+    } else {
+      return ('');
+    }
+  };
+
   render() {
+
     return (
 
 <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
@@ -132,7 +192,6 @@ class NewTask extends Component{
             }}/>
         </Grid>
       </ExpansionPanelDetails>
-
       <Divider />
       <ExpansionPanelDetails >
       <Grid container direction='column' justify='space-around' alignItems='stretch'>
@@ -149,7 +208,7 @@ class NewTask extends Component{
         </Grid>
         <Grid item>
           <TextField name='timeInit' label='Duración' variant='outlined'
-          margin='dense' fullWidth value={this.state.timeInit} type='button' onClick={this.handleDialogOpen}
+          margin='dense' fullWidth value={this.renderTimeInit(this.state.timeInit)} type='button' onClick={this.handleDialogOpen}
           InputProps={{
             startAdornment:
               <InputAdornment position='start'>
@@ -166,18 +225,20 @@ class NewTask extends Component{
               <Switch
               checked={this.state.dswitch}
               onChange={this.handleSwitch}
-            />}label="Duración predeterminada"/>
-            <RadioGroup name="duration0" value={this.state.value} >
-  <FormControlLabel disabled={!(this.state.dswitch)} value="30" control={<Radio />} label="Corta: 30 min o menos" />
-  <FormControlLabel disabled={!(this.state.dswitch)} value="60" control={<Radio />} label="Media: 30 min a 1 hr" />
-  <FormControlLabel disabled={!(this.state.dswitch)} value="2" control={<Radio />} label="Larga: más de 1 hr" />
+            />
+          }label="Duración predeterminada"/>
+            <RadioGroup name="duration" value={this.state.duration} onChange={this.handleInputChange}>
+  <FormControlLabel disabled={!(this.state.dswitch)} value="sh" control={<Radio />} label="Corta: 30 min o menos" />
+  <FormControlLabel disabled={!(this.state.dswitch)} value="md" control={<Radio />} label="Media: 30 min a 1 hr" />
+  <FormControlLabel disabled={!(this.state.dswitch)} value="lg" control={<Radio />} label="Larga: más de 1 hr" />
 </RadioGroup>
-<DialogContentText>
-Definir duración en minutos y segundos (Max dos horas).
-<Grid container direction="row"  justify="space-between" alignItems="center">
+<Divider />
+  <Typography noWrap variant={this.state.dswitch ? ('caption') : ('subheading')} >Definir duración en minutos y segundos. (máximo dos horas)</Typography>
+<Grid container direction="row"  justify="space-between" alignItems="flex-start">
+
   <Grid item>
   <TextField
-  error = {(parseInt(this.state.min * 60) + parseInt(this.state.sec)> 7200)}
+  error = {this.handleError(this.state.min, this.state.sec)}
   disabled={this.state.dswitch}
   name='min'
   label='Minutos'
@@ -186,7 +247,7 @@ Definir duración en minutos y segundos (Max dos horas).
   value={this.state.min}
   onChange={this.handleInputChange}
   type="number"
-  helperText={(parseInt(this.state.sec) > 59) ? ('Ingresa bien los segundos') : ('')}
+  helperText={this.renderHelperText(this.state.min, this.state.sec)}
   InputLabelProps={{
     shrink: true,
   }}
@@ -194,10 +255,8 @@ Definir duración en minutos y segundos (Max dos horas).
   </Grid>
 
   <Grid item>
-
-
 <TextField
-error = {(parseInt(this.state.min * 60) + parseInt(this.state.sec) > 7200)}
+error = {this.handleError(this.state.min, this.state.sec)}
 disabled={this.state.dswitch}
 name='sec'
 label='Segundos'
@@ -206,7 +265,7 @@ margin='dense' fullWidth
 value={this.state.sec}
 onChange={this.handleInputChange}
 type='number'
-helperText={(parseInt(this.state.min * 60) + parseInt(this.state.sec) > 7200) ? ('Menor a 2 hrs...') : ('')}
+helperText={this.renderHelperTextSec(this.state.sec)}
 InputLabelProps={{
   shrink: true,
 }}
@@ -215,20 +274,15 @@ InputLabelProps={{
 </Grid>
 
 
-  </DialogContentText>
-
-
 
             </DialogContent>
             <Divider/>
             <DialogActions>
             <Button onClick={this.handleDialogClose} color="secondary">Cancelar</Button>
-            <Button disabled = {(
-              ((parseInt(this.state.min * 60) + parseInt(this.state.sec)) > 7200) ||
-              (parseInt(this.state.sec) > 59) ||
-              ((parseInt(this.state.min * 60) + parseInt(this.state.sec)) <= 0)
-            )}
-          onClick={this.handleTimeInit} color="secondary">Guardar</Button>
+            {!this.state.dswitch && <Button disabled = {this.handleError(this.state.min, this.state.sec)}
+            onClick={this.handleTimeInit} color="secondary">Guardar</Button>}
+
+            {this.state.dswitch && <Button onClick={this.handleTimePred} color="secondary">Guardar</Button>}
 </DialogActions>
 </Dialog>
 

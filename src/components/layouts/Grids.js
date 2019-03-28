@@ -24,7 +24,6 @@ class Grids extends Component {
 
     const { selected } = this.state;
 
-
     return(
       <Grid container>
         <Grid item xs={12} sm={3} md={3} lg={2} xl={2}>
